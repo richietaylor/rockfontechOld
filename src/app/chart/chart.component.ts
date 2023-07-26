@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./chart.component.css']
 })
 export class ChartComponent {
-
+  title= "chart";
 }
+
+console.log("aaaaaaaa")
