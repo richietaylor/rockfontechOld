@@ -8,6 +8,7 @@ import { Entry } from '../entry';
   imports: [CommonModule],
   template: `
     <p>
+      {{entry.id}}
       {{entry.date}}
       {{entry.efficiency}}
     </p>

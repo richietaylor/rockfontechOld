@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { ChartComponent } from './chart/chart.component';
 import { TableComponent } from './table/table.component';
-// import { EntryComponent } from './entry/entry.component'; 
+import { EntryComponent } from './entry/entry.component'; 
 @Component({
   standalone: true,
   imports: [
     ChartComponent,
     TableComponent,
-    // EntryComponent,
+    EntryComponent,
   ],
   selector: 'app-root',
   templateUrl: './app.component.html',

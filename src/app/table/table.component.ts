@@ -37,7 +37,12 @@ export class TableComponent {
   {
     id: 3,
     date: "15/09/2023",
-    efficiency: "97",
+    efficiency: "98",
   },
+  {
+    id:4,
+    date: "21/09/2023",
+    efficiency: "87",
+  }
 ]
 }

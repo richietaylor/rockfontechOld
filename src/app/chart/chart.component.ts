@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+
 @Component({
   standalone: true,
   selector: 'app-chart',
@@ -9,5 +10,3 @@ import { Component } from '@angular/core';
 export class ChartComponent {
   title= "chart";
 }
-
-console.log("aaaaaaaa")
