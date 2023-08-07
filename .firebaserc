@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "rockfontechza"
+  },
+  "targets": {
+    "rockfontechza": {
+      "hosting": {
+        "Rockfontech": [
+          "rockfontechza"
+        ]
+      }
+    }
+  }
+}
