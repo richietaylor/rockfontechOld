@@ -10,5 +10,10 @@
         ]
       }
     }
+  },
+  "etags": {
+    "rockfontechza": {
+      "extensionInstances": {}
+    }
   }
 }
