@@ -13,7 +13,15 @@ import * as logger from "firebase-functions/logger";
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 
-// export const helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
+export const helloWorld = onRequest((request, response) => {
+  logger.info("Hello logs!", {structuredData: true});
+  const number = Math.round(Math.random() * 100);
+  response.send(number.toString());
+});
+
+// const functions = require('firebase-functions');
+
+// exports.randomNumber = functions.https.onRequest((request: any, response: { send: (arg0: (radix?: number | undefined) => string) => void; }) => {
+//     const number = Math.round(Math.random() * 100);
+//     response.send(number.toString);
 // });
