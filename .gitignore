@@ -46,5 +46,5 @@ Thumbs.db
 *-debug.log
 .runtimeconfig.json
 
-#keys file
-/keys.json
+# Keys file
+functions/googleAPIKeys.json
