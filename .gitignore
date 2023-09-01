@@ -48,3 +48,4 @@ Thumbs.db
 
 # Keys file
 functions/googleAPIKeys.json
+functions/loadriteKeys.json

@@ -7,15 +7,15 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
-import {onRequest} from "firebase-functions/v2/https";
-import * as logger from "firebase-functions/logger";
+// import {onRequest} from "firebase-functions/v2/https";
+// import * as logger from "firebase-functions/logger";
 import { google } from 'googleapis';
 import * as fs from 'fs';
 
 import * as functions from 'firebase-functions';
 
 
-const CREDENTIALS_PATH = '../keys.json'; // Adjust this
+const CREDENTIALS_PATH = './googleAPIKeys.json'; // Adjust this
 // const CREDENTIALS_PATH = '../../keys/credentials.json';  // Adjust this path as needed
 
 export const getGoogleSheetData = functions.https.onRequest(async (req, res) => {
@@ -58,14 +58,14 @@ export const getGoogleSheetData = functions.https.onRequest(async (req, res) => 
 
 
 
+
+
+
+
+
+
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
-
-export const helloWorld = onRequest((request, response) => {
-  logger.info("Hello logs!", {structuredData: true});
-  const number = Math.round(Math.random() * 100);
-  response.send(number.toString());
-});
 
 // const functions = require('firebase-functions');
 
