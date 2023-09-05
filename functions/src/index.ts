@@ -11,7 +11,6 @@
 // import * as logger from "firebase-functions/logger";
 import { google } from 'googleapis';
 import * as fs from 'fs';
-
 import * as functions from 'firebase-functions';
 
 
@@ -28,7 +27,7 @@ export const getGoogleSheetData = functions.https.onRequest(async (req, res) => 
     // Extract query parameters
     // const spreadsheetId = req.query.spreadsheetId as string;
     const spreadsheetId = '1dB3Y_FnAzSqJFGSHEqWjPFuKQvlKuO60CZ7fSRcb_1o';
-    const range = req.query.range as string || 'A1:Z100';
+    const range = req.query['range'] as string || 'A1:Z100';
 
     // Load service account credentials
     const credentials = JSON.parse(fs.readFileSync(CREDENTIALS_PATH, 'utf8'));
@@ -57,7 +56,46 @@ export const getGoogleSheetData = functions.https.onRequest(async (req, res) => 
 });
 
 
+import * as puppeteer from 'puppeteer';
+import * as admin from 'firebase-admin';
 
+admin.initializeApp();
+
+
+export const scrapeSite = functions.https.onRequest(async (req: functions.Request, res: functions.Response) => {
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  });
+
+  const LOADRITE_CRED_PATH = './loadriteKeys.json'; // Make sure to deploy this file with your function
+  const page = await browser.newPage();
+  const credentials: {username: string, password: string} = JSON.parse(fs.readFileSync(LOADRITE_CRED_PATH, 'utf8'));
+
+  try {
+    await page.goto('https://reporting.loadrite-myinsighthq.com/Reports?Type=DIY%20Reports');
+    await page.waitForSelector('#signInFormUsername', { visible: true });
+    await page.type('#signInFormUsername', credentials.username);
+    await page.waitForSelector('#signInFormPassword', { visible: true });
+    await page.type('#signInFormPassword', credentials.password);
+    await page.waitForSelector('input[type="Submit"]', { visible: true });
+    await page.click('input[type="Submit"]');
+
+    await page.setDefaultTimeout(500000);
+    await page.waitForSelector('#toplevel', { visible: true });
+    await page.goto('https://reporting.loadrite-myinsighthq.com/data');
+
+    // ... (Your scraping logic here)
+
+    await browser.close();
+    res.send('Scraping Done!');
+
+  } catch (error) {
+    await browser.close();
+    console.error(`Failed to scrape: ${error}`);
+    res.status(500).send(`Failed to scrape: ${error}`);
+  }
+});
 
 
 
