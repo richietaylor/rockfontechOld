@@ -68,22 +68,26 @@ const storage = new Storage();
 export const myCloudFunction = functions.https.onRequest(async (req, res) => {
   const bucketName = 'rockfontechza.appspot.com';
   const fileName = 'chrome.dll';
-  const tempFilePath = path.join('/tmp/puppeteer/chrome/win64-116.0.5845.96/chrome-win64', 'chrome.dll');  // Temporary storage location
-  // const tempFilePath = path.join('test/');
+  const tempFilePath = path.join('/tmp', 'chrome.dll');  
+  const newLocation = 'test/chrome.dll'; // New location in the same bucket or another bucket
   const bucket = storage.bucket(bucketName);
 
-  // Downloads the file from Firebase Storage
-  await bucket.file(fileName).download({
-    destination: tempFilePath,
-  });
+  try {
+    // Downloads the file from Firebase Storage
+    await bucket.file(fileName).download({
+      destination: tempFilePath,
+    });
 
-  // Now the file has been downloaded to `tempFilePath`, and you can read it.
-  // const fileContent = fs.readFileSync(tempFilePath, 'utf8');
+    // Upload the file to new location
+    await bucket.upload(tempFilePath, {
+      destination: newLocation,
+    });
 
-  // Do something with `fileContent`
-  // ...
-
-  res.status(200).send(`Successfully downloaded file to ${tempFilePath}`);
+    res.status(200).send(`Successfully moved file to ${newLocation}`);
+  } catch (error) {
+    console.error(`Failed to move file: ${error}`);
+    res.status(500).send(`Failed to move file: ${error}`);
+  }
 });
 
 
