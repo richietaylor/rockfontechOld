@@ -65,7 +65,7 @@ admin.initializeApp();
 export const scrapeSite = functions.https.onRequest(async (req: functions.Request, res: functions.Response) => {
   const browser = await puppeteer.launch({
     headless: "new",
-    executablePath: `/root/.cache/puppeteer`,
+    // executablePath: `/root/.cache/puppeteer`,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
 

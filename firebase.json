@@ -30,6 +30,7 @@
     {
       "source": "functions",
       "codebase": "default",
+      "memory": "512MB",
       "ignore": [
         "node_modules",
         ".git",
