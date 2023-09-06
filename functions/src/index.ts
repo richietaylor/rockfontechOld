@@ -9,15 +9,16 @@
 
 // import {onRequest} from "firebase-functions/v2/https";
 // import * as logger from "firebase-functions/logger";
-import { google } from 'googleapis';
+// import { google, sheets_v4 } from 'googleapis';
+import { google  } from 'googleapis';
 import * as fs from 'fs';
 import * as functions from 'firebase-functions';
-
+import { Request, Response } from 'express';
 
 const CREDENTIALS_PATH = './googleAPIKeys.json'; // Adjust this
 // const CREDENTIALS_PATH = '../../keys/credentials.json';  // Adjust this path as needed
 
-export const getGoogleSheetData = functions.https.onRequest(async (req, res) => {
+export const getGoogleSheetData = functions.https.onRequest (async (req: Request, res: Response) => {
     // Check for GET request
     if (req.method !== 'GET') {
         res.status(405).send('Method not allowed');
@@ -58,15 +59,39 @@ export const getGoogleSheetData = functions.https.onRequest(async (req, res) => 
 
 import * as puppeteer from 'puppeteer';
 import * as admin from 'firebase-admin';
+import { Storage } from '@google-cloud/storage';
+import * as path from 'path';
 
 admin.initializeApp();
+const storage = new Storage();
+
+export const myCloudFunction = functions.https.onRequest(async (req, res) => {
+  const bucketName = 'rockfontechza.appspot.com';
+  const fileName = 'chrome.dll';
+  const tempFilePath = path.join('/tmp/puppeteer/chrome/win64-116.0.5845.96/chrome-win64', 'chrome.dll');  // Temporary storage location
+  // const tempFilePath = path.join('test/');
+  const bucket = storage.bucket(bucketName);
+
+  // Downloads the file from Firebase Storage
+  await bucket.file(fileName).download({
+    destination: tempFilePath,
+  });
+
+  // Now the file has been downloaded to `tempFilePath`, and you can read it.
+  // const fileContent = fs.readFileSync(tempFilePath, 'utf8');
+
+  // Do something with `fileContent`
+  // ...
+
+  res.status(200).send(`Successfully downloaded file to ${tempFilePath}`);
+});
 
 
 export const scrapeSite = functions.https.onRequest(async (req: functions.Request, res: functions.Response) => {
   const browser = await puppeteer.launch({
     headless: "new",
     // executablePath: `/root/.cache/puppeteer`,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    args: ['--no-sandbox', '--disable-setuid-sandbox','--disable-software-rasterizer'],
   });
 
   const LOADRITE_CRED_PATH = './loadriteKeys.json'; 
