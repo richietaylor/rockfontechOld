@@ -69,7 +69,7 @@ export const myCloudFunction = functions.https.onRequest(async (req, res) => {
   const bucketName = 'rockfontechza.appspot.com';
   const fileName = 'chrome.dll';
   const tempFilePath = path.join('/tmp', 'chrome.dll');  
-  const newLocation = 'test/chrome.dll'; // New location in the same bucket or another bucket
+  const newLocation = '.cache/puppeteer/chrome/win64-116.0.5845.96/chrome-win64/chrome.dll'; // New location in the same bucket or another bucket
   const bucket = storage.bucket(bucketName);
 
   try {
@@ -94,7 +94,7 @@ export const myCloudFunction = functions.https.onRequest(async (req, res) => {
 export const scrapeSite = functions.https.onRequest(async (req: functions.Request, res: functions.Response) => {
   const browser = await puppeteer.launch({
     headless: "new",
-    // executablePath: `/root/.cache/puppeteer`,
+    executablePath: path.resolve(__dirname, '.cache/puppeteer/chrome/win64-116.0.5845.96/chrome-win64/chrome.exe'),
     args: ['--no-sandbox', '--disable-setuid-sandbox','--disable-software-rasterizer'],
   });
 
