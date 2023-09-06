@@ -64,11 +64,12 @@ admin.initializeApp();
 
 export const scrapeSite = functions.https.onRequest(async (req: functions.Request, res: functions.Response) => {
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: "new",
+    executablePath: `/root/.cache/puppeteer`,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
 
-  const LOADRITE_CRED_PATH = './loadriteKeys.json'; // Make sure to deploy this file with your function
+  const LOADRITE_CRED_PATH = './loadriteKeys.json'; 
   const page = await browser.newPage();
   const credentials: {username: string, password: string} = JSON.parse(fs.readFileSync(LOADRITE_CRED_PATH, 'utf8'));
 
