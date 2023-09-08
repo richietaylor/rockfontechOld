@@ -65,7 +65,10 @@ import * as path from 'path';
 admin.initializeApp();
 const storage = new Storage();
 
-export const myCloudFunction = functions.https.onRequest(async (req, res) => {
+export const myCloudFunction = functions.runWith({
+  memory: '512MB',  // increase to 1GB or 2GB if needed
+  timeoutSeconds: 540,
+  }).https.onRequest(async (req, res) => {
   const bucketName = 'rockfontechza.appspot.com';
   const fileName = 'chrome.dll';
   const tempFilePath = path.join('/tmp', 'chrome.dll');  
@@ -83,7 +86,7 @@ export const myCloudFunction = functions.https.onRequest(async (req, res) => {
       destination: newLocation,
     });
 
-    res.status(200).send(`Successfully moved file to ${newLocation}`);
+    res.status(200).send(`5:02 - Successfully moved file to ${newLocation}`);
   } catch (error) {
     console.error(`Failed to move file: ${error}`);
     res.status(500).send(`Failed to move file: ${error}`);
@@ -91,10 +94,14 @@ export const myCloudFunction = functions.https.onRequest(async (req, res) => {
 });
 
 
-export const scrapeSite = functions.https.onRequest(async (req: functions.Request, res: functions.Response) => {
+export const scrapeSite = functions.runWith({
+  memory: '512MB',  // increase to 1GB or 2GB if needed
+  timeoutSeconds: 540,
+  }).https.onRequest(async (req: functions.Request, res: functions.Response) => {
   const browser = await puppeteer.launch({
     headless: "new",
-    executablePath: path.resolve(__dirname, '.cache/puppeteer/chrome/win64-116.0.5845.96/chrome-win64/chrome.exe'),
+    // executablePath: path.resolve(__dirname, '.cache/puppeteer/chrome/win64-116.0.5845.96/chrome-win64/chrome.exe'),
+    // executablePath: '.cache/puppeteer/chrome/win64-116.0.5845.96/chrome-win64/chrome.exe',
     args: ['--no-sandbox', '--disable-setuid-sandbox','--disable-software-rasterizer'],
   });
 
