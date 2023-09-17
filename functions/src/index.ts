@@ -57,82 +57,82 @@ export const getGoogleSheetData = functions.https.onRequest (async (req: Request
 });
 
 
-import * as puppeteer from 'puppeteer';
-import * as admin from 'firebase-admin';
-import { Storage } from '@google-cloud/storage';
-import * as path from 'path';
+// import * as puppeteer from 'puppeteer';
+// import * as admin from 'firebase-admin';
+// import { Storage } from '@google-cloud/storage';
+// import * as path from 'path';
 
-admin.initializeApp();
-const storage = new Storage();
+// admin.initializeApp();
+// const storage = new Storage();
 
-export const myCloudFunction = functions.runWith({
-  memory: '512MB',  // increase to 1GB or 2GB if needed
-  timeoutSeconds: 540,
-  }).https.onRequest(async (req, res) => {
-  const bucketName = 'rockfontechza.appspot.com';
-  const fileName = 'chrome.dll';
-  const tempFilePath = path.join('/tmp', 'chrome.dll');  
-  const newLocation = '.cache/puppeteer/chrome/win64-116.0.5845.96/chrome-win64/chrome.dll'; // New location in the same bucket or another bucket
-  const bucket = storage.bucket(bucketName);
+// export const myCloudFunction = functions.runWith({
+//   memory: '512MB',  // increase to 1GB or 2GB if needed
+//   timeoutSeconds: 540,
+//   }).https.onRequest(async (req, res) => {
+//   const bucketName = 'rockfontechza.appspot.com';
+//   const fileName = 'chrome.dll';
+//   const tempFilePath = path.join('/tmp', 'chrome.dll');  
+//   const newLocation = '.cache/puppeteer/chrome/win64-116.0.5845.96/chrome-win64/chrome.dll'; // New location in the same bucket or another bucket
+//   const bucket = storage.bucket(bucketName);
 
-  try {
-    // Downloads the file from Firebase Storage
-    await bucket.file(fileName).download({
-      destination: tempFilePath,
-    });
+//   try {
+//     // Downloads the file from Firebase Storage
+//     await bucket.file(fileName).download({
+//       destination: tempFilePath,
+//     });
 
-    // Upload the file to new location
-    await bucket.upload(tempFilePath, {
-      destination: newLocation,
-    });
+//     // Upload the file to new location
+//     await bucket.upload(tempFilePath, {
+//       destination: newLocation,
+//     });
 
-    res.status(200).send(`5:02 - Successfully moved file to ${newLocation}`);
-  } catch (error) {
-    console.error(`Failed to move file: ${error}`);
-    res.status(500).send(`Failed to move file: ${error}`);
-  }
-});
+//     res.status(200).send(`5:02 - Successfully moved file to ${newLocation}`);
+//   } catch (error) {
+//     console.error(`Failed to move file: ${error}`);
+//     res.status(500).send(`Failed to move file: ${error}`);
+//   }
+// });
 
 
-export const scrapeSite = functions.runWith({
-  memory: '512MB',  // increase to 1GB or 2GB if needed
-  timeoutSeconds: 540,
-  }).https.onRequest(async (req: functions.Request, res: functions.Response) => {
-  const browser = await puppeteer.launch({
-    headless: "new",
-    // executablePath: path.resolve(__dirname, '.cache/puppeteer/chrome/win64-116.0.5845.96/chrome-win64/chrome.exe'),
-    // executablePath: '.cache/puppeteer/chrome/win64-116.0.5845.96/chrome-win64/chrome.exe',
-    args: ['--no-sandbox', '--disable-setuid-sandbox','--disable-software-rasterizer'],
-  });
+// export const scrapeSite = functions.runWith({
+//   memory: '512MB',  // increase to 1GB or 2GB if needed
+//   timeoutSeconds: 540,
+//   }).https.onRequest(async (req: functions.Request, res: functions.Response) => {
+//   const browser = await puppeteer.launch({
+//     headless: "new",
+//     // executablePath: path.resolve(__dirname, '.cache/puppeteer/chrome/win64-116.0.5845.96/chrome-win64/chrome.exe'),
+//     // executablePath: '.cache/puppeteer/chrome/win64-116.0.5845.96/chrome-win64/chrome.exe',
+//     args: ['--no-sandbox', '--disable-setuid-sandbox','--disable-software-rasterizer'],
+//   });
 
-  const LOADRITE_CRED_PATH = './loadriteKeys.json'; 
-  const page = await browser.newPage();
-  const credentials: {username: string, password: string} = JSON.parse(fs.readFileSync(LOADRITE_CRED_PATH, 'utf8'));
+//   const LOADRITE_CRED_PATH = './loadriteKeys.json'; 
+//   const page = await browser.newPage();
+//   const credentials: {username: string, password: string} = JSON.parse(fs.readFileSync(LOADRITE_CRED_PATH, 'utf8'));
 
-  try {
-    await page.goto('https://reporting.loadrite-myinsighthq.com/Reports?Type=DIY%20Reports');
-    await page.waitForSelector('#signInFormUsername', { visible: true });
-    await page.type('#signInFormUsername', credentials.username);
-    await page.waitForSelector('#signInFormPassword', { visible: true });
-    await page.type('#signInFormPassword', credentials.password);
-    await page.waitForSelector('input[type="Submit"]', { visible: true });
-    await page.click('input[type="Submit"]');
+//   try {
+//     await page.goto('https://reporting.loadrite-myinsighthq.com/Reports?Type=DIY%20Reports');
+//     await page.waitForSelector('#signInFormUsername', { visible: true });
+//     await page.type('#signInFormUsername', credentials.username);
+//     await page.waitForSelector('#signInFormPassword', { visible: true });
+//     await page.type('#signInFormPassword', credentials.password);
+//     await page.waitForSelector('input[type="Submit"]', { visible: true });
+//     await page.click('input[type="Submit"]');
 
-    await page.setDefaultTimeout(500000);
-    await page.waitForSelector('#toplevel', { visible: true });
-    await page.goto('https://reporting.loadrite-myinsighthq.com/data');
+//     await page.setDefaultTimeout(500000);
+//     await page.waitForSelector('#toplevel', { visible: true });
+//     await page.goto('https://reporting.loadrite-myinsighthq.com/data');
 
-    // ... (Your scraping logic here)
+//     // ... (Your scraping logic here)
 
-    await browser.close();
-    res.send('Scraping Done!');
+//     await browser.close();
+//     res.send('Scraping Done!');
 
-  } catch (error) {
-    await browser.close();
-    console.error(`Failed to scrape: ${error}`);
-    res.status(500).send(`Failed to scrape: ${error}`);
-  }
-});
+//   } catch (error) {
+//     await browser.close();
+//     console.error(`Failed to scrape: ${error}`);
+//     res.status(500).send(`Failed to scrape: ${error}`);
+//   }
+// });
 
 
 
