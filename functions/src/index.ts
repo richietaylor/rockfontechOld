@@ -1,11 +1,3 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * import {onCall} from "firebase-functions/v2/https";
- * import {onDocumentWritten} from "firebase-functions/v2/firestore";
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
 
 // import {onRequest} from "firebase-functions/v2/https";
 // import * as logger from "firebase-functions/logger";
@@ -55,6 +47,60 @@ export const getGoogleSheetData = functions.https.onRequest (async (req: Request
         res.status(500).send(`Failed to fetch data from Google Sheets: ${error}`);
     }
 });
+
+// import * as functions from 'firebase-functions';
+import * as admin from 'firebase-admin';
+import axios from 'axios';
+import * as path from 'path';
+import * as os from 'os';
+// import * as fs from 'fs';
+import * as util from 'util';
+
+// Initialize Firebase
+admin.initializeApp();
+
+const writeFile = util.promisify(fs.writeFile);
+
+export const databaseToStorage = functions.firestore
+  .document('test/{documentId}')
+  .onCreate(async (snap, context) => {
+    // const fileData = snap.data();
+    // const zapierUrl = fileData?.zapierUrl; // Assuming zapierUrl is the field in the Firestore document
+    const zapierUrl = "https://zapier.com/engine/hydrate/16455779/.eJw9zk8LgkAQh-GvEnPWSnO17daxQ9ChS0XI_hljSVfZXSkRv3uTRNf3NzzMCKq1AW0ow9Ah7OAAERjrg7AKS6OpXEVn0B2Fqfen76p6H9qm9-jmPckzxoqCRyCUanuS_jXhLILKYK1LK5qvXpkaPRnPl3APD7txLmXXGnrCUbiN8MSBLv1mJRMuU6lZnBZMx5lcJ7EUKou13kquMF_LjSbrR1_QE6HFsDg7-pW05bv2MN2n6QOsaUqp:1qhoKh:5ATQcy14IQXbBst2-ghGjK2XqbA/";
+
+    if (!zapierUrl) {
+      console.error('zapierUrl not found');
+      return;
+    }
+
+    try {
+      // Download the file from Zapier URL
+      const response = await axios.get(zapierUrl, { responseType: 'arraybuffer' });
+      const buffer = Buffer.from(response.data, 'binary');
+
+      // Generate a temporary local path to save the downloaded file
+      const tempFilePath = path.join(os.tmpdir(), 'tempfile.xls');
+      
+      // Write the file to the temporary path
+      await writeFile(tempFilePath, buffer);
+
+      // Initialize Firebase Storage and specify bucket if it's not the default bucket
+      const bucket = admin.storage().bucket(); // if default bucket
+      // const bucket = admin.storage().bucket('your-bucket-name'); // if custom bucket
+
+      // Upload the file to Firebase Storage
+      await bucket.upload(tempFilePath, {
+        destination: `zapier/your_file.xls`,
+      });
+
+      console.log('File has been uploaded to Firebase Storage');
+
+      // Optionally, you can save the URL to Firestore or perform additional operations
+
+    } catch (error) {
+      console.error('Error processing file:', error);
+    }
+  });
 
 
 // import * as puppeteer from 'puppeteer';
