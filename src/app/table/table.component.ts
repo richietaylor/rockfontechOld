@@ -7,14 +7,7 @@ import { Entry } from '../entry';
   selector: 'app-table',
   standalone: true,
   imports: [CommonModule, EntryComponent],
-  template: `
-    <p>
-      table works!
-    </p>
-    <button class="primary" type="button">Search</button>
-    <app-entry *ngFor="let entry of entryList"
-    [entry]="entry"></app-entry>
-  `,
+  templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
 })
 export class TableComponent {

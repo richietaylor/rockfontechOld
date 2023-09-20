@@ -1,1 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+  body {
+  background-image: url('/assets/background4k.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  background-color: #000000;
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+  font-family: helvetica;
+  /* font-weight: bold; */
+}

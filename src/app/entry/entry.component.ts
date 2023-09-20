@@ -7,7 +7,7 @@ import { Entry } from '../entry';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <p>
+    <p class = "list">
       {{entry.id}}
       {{entry.date}}
       {{entry.efficiency}}
