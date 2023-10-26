@@ -7,35 +7,71 @@
 /* Navbar styles */
 .navbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   background-color: rgba(255, 255, 255, 1);
   /* padding: 1rem; */
   position: fixed;
   width: 100%;
-  height: 5%;
+  height: 10%;
+  min-width:100%;
+  min-height: 10%;
   top: 0;
   z-index: 1;
-  border-radius: 0px 0px 10px 10px;
+  /* border-radius: 0px 0px 20px 20px; */
+  box-shadow: 5px 5px 15px 5px #000000;
+  opacity: 0.8;
 }
 
-.icon {
-  width: 100px;
-  height: 100px;
+
+
+/* .navitem {
+  background-color: #000000;
+  width: 100%;
+  height: 100%;
+} */
+
+.iconOld {
+  width: 10vw;  /* Using viewport width unit. Adjust as needed. */
+  height: 10vw;
+  /* max-width:10%; */
+  /* max-height: 100%; */
+  /* height: auto;  */
+  /* max-width: 100%; */
+  object-fit: none;
   background-color: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 3px solid black;
+  border-radius: 0px 0px 0px 20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('/assets/icon.png');
+}
+.icon {
+  width: 10vw;  /* Using viewport width unit. Adjust as needed. */
+  height: 10vh; /* Making height proportional to width for a square aspect ratio. Adjust as needed. */
+  /* min-width: 1vw; */
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid black;
+  /* border-radius: 0px 0px 0px 20px; */
+  background-size: contain; /* or 'contain', depending on your preference */
+  background-repeat: no-repeat;
+  max-width: 90px;
   background-image: url('/assets/icon.png');
 }
 
+
 .navbar ul {
-  list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
-  text-align: left;
-
+  text-align: center;
+  list-style-type: none;
   
 }
 
@@ -51,6 +87,7 @@
   justify-content: center;
   align-items: center;
   min-height: calc(100vh - 70px);
+  
 }
 
 /* Media query for screen size responsiveness */

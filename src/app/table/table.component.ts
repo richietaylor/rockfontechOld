@@ -2,11 +2,13 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EntryComponent } from '../entry/entry.component';
 import { Entry } from '../entry';
+import { ChartComponent } from '../chart/chart.component';
+// import { Chart } from '../chart';
 
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [CommonModule, EntryComponent],
+  imports: [CommonModule, EntryComponent , ChartComponent], //
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
 })
@@ -36,6 +38,8 @@ export class TableComponent {
     id:4,
     date: "21/09/2023",
     efficiency: "87",
-  }
+  },
+
+
 ]
 }

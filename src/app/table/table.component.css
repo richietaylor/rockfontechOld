@@ -4,16 +4,21 @@
     /* background-size: cover; */
     background-color: #ffffff;
     font-size: large;
+    display: flex;
+    flex-direction: column;
     /* padding: 50%;
     padding-top: 100%;
     padding-bottom: 100%;
     padding-right: 100%;
     padding-left: 100%;
     position: left; */
-    border-radius: 10px;
+    /* border-radius: 20px; */
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90vh; /* 100% of the viewport height */
-    /* opacity: 0.5; */
+    height: 80vh; /* 100% of the viewport height */
+    width: 200vh;
+    opacity: 0.8;
+    box-shadow: 5px 5px 15px 5px #000000;
 }
+
